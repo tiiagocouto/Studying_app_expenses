@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myexpenses/models/transaction.dart';
+import 'package:intl/intl.dart';
 
 main() => runApp(const MyExpensesApp());
 
@@ -88,7 +89,8 @@ class MyHomePage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                                 color: Colors.black87)),
-                        Text(tr.date.toString(),
+                        // contrutor que formata a data apartir do import intl
+                        Text(DateFormat('d MMM y').format(tr.date),
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
