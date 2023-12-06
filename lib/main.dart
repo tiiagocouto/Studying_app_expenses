@@ -1,12 +1,11 @@
+import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
-import 'package:myexpenses/models/transaction.dart';
 import 'package:intl/intl.dart';
 
 main() => runApp(const MyExpensesApp());
 
 class MyExpensesApp extends StatelessWidget {
   const MyExpensesApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(home: MyHomePage());
@@ -16,6 +15,9 @@ class MyExpensesApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
   //const MyHomePage({super.key});
+
+  final titleController = TextEditingController();
+  final valueController = TextEditingController();
 
 // criando um atributo final
   final _transactions = [
@@ -40,25 +42,21 @@ class MyHomePage extends StatelessWidget {
         title: const Text('Despesas Pessoais'),
       ),
       body: Column(
-        // Comando para ajustar posições de cima para baixo
-        mainAxisAlignment:
-            MainAxisAlignment.spaceAround, // spaceAround = espaço ao redor
-        // Comando para ajustar posições da esq para dir
         crossAxisAlignment:
             CrossAxisAlignment.stretch, // stretch = esticar a area inteira
-        children: <Widget>[
+        children: [
           const SizedBox(
             child: Card(
               color: Colors.blue,
-              elevation: 5,
               child: Text('Grafico'),
+              elevation: 5,
             ),
           ),
           Column(
             children: _transactions.map((tr) {
               return Card(
                 child: Row(
-                  children: <Widget>[
+                  children: [
                     Container(
                         // comando para setar distancias horizontais e verticais
                         margin: const EdgeInsets.symmetric(
@@ -67,10 +65,11 @@ class MyHomePage extends StatelessWidget {
                         ),
                         // decoration serve para aplicar estilos no layout
                         decoration: BoxDecoration(
-                            border: Border.all(
-                          color: Colors.blue,
-                          width: 2,
-                        )),
+                          border: Border.all(
+                            color: Colors.blue,
+                            width: 2,
+                          ),
+                        ),
                         padding: const EdgeInsets.all(10),
                         child: Text(
                           // Interpolarização
@@ -83,24 +82,64 @@ class MyHomePage extends StatelessWidget {
                         )),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(tr.title,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.black87)),
+                      children: [
+                        Text(
+                          tr.title,
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
                         // contrutor que formata a data apartir do import intl
-                        Text(DateFormat('d MMM y').format(tr.date),
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.grey)),
+                        Text(
+                          DateFormat('d MMM y').format(tr.date),
+                          style: const TextStyle(color: Colors.grey),
+                        ),
                       ],
                     )
                   ],
                 ),
               );
             }).toList(),
+          ),
+          Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: titleController,
+                    decoration: const InputDecoration(
+                      labelText: 'Titulo',
+                    ),
+                  ),
+                  TextField(
+                    controller: valueController,
+                    decoration: const InputDecoration(
+                      labelText: 'Valor (R\$)',
+                    ),
+                  ),
+                  // Na mesma coluna dos cards
+                  // botão foi Wrap com a Row, permitindo a modificações
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      TextButton(
+                        child: const Text(
+                          'Nova Transação',
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        onPressed: () {
+                          print(titleController.text);
+                          print(valueController.text);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
